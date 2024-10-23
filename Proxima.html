@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxima</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 120%;
+            background-color: lightgrey; 
+        }
+        textarea {
+            background-color: lightgrey; 
+            font-size: 150%;
+        }
+        .left {
+            float: left; 
+            padding-left: 40px;
+        }
+        button {
+            border-radius: 10px;
+            background-color: lightgrey;
+            padding: 20px;
+            font-size: 20px; 
+            cursor: pointer; 
+            transition: .2s;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        button:hover {
+            padding: 22px; 
+            transition: .2s; 
+            font-family: 'Courier New', Courier, monospace;
+
+        }
+        .center {
+            position: absolute;
+            top: 20%;
+            left: 50%; 
+            transform: translateX(-50%);
+        }
+        #align-center {
+            text-align: center;
+        }
+        .right {
+            float: right;
+            width: 33vw; 
+      }
+      span {
+        font-weight: bold; 
+      }
+    </style>
+</head>
+<body>
+<div id="align-center">
+        <h1>PROXIMA</h1>
+    <h2>Compute and format data at the press of a button</h2>
+    <div  class="left">
+        <textarea id="rawdata" placeholder = "Input data seperated by commas here"style="height: 500px; width: 300px;"></textarea> <br>
+        <button onclick = "process()">Process Data</button>
+    </div>
+    <div class='center'>
+        <p>Sample standard deviation: <br> <br><span id="stdev"></span></p>
+        <p>Repetitions needed (95% confidence): <br> <br><span id="reps"></span></p>
+        <p>Margin of error: <br> <br>  <span id="me"></span></p>
+        <p>Uncertianty: <br> <br> <span id="unc"></span></p>
+        </div>
+    </div>
+    <div class="right">
+
+        <h3 style = 'text-align: center;'>Data formatted in a table:</h3>
+        <table> </table>
+    </div>
+    <script>
+        // ok ok this code is copied from stack overflow
+            function getStandardDeviation(array) {
+                 const n = array.length;
+                 const mean = array.reduce((sum, value) => sum + value, 0) / n;
+                 const variance = array.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / n;
+                return Math.sqrt(variance);
+            }
+            // now we're back to my code :)
+        function process() {
+            var numarray = [];
+            var rawdata = document.getElementById('rawdata').value;
+            console.log(rawdata);
+            var strsplit = rawdata.split(",");
+
+            for (let i = 0; i < strsplit.length; i++) {
+                if (Number(strsplit[i])) {
+                numarray.push(Number(strsplit[i]));
+                } else {
+                    // beautiful error handling- LV. 
+                    alert("Only enter numbers pls. The final result may be flawed. ");
+                }
+            }
+
+            console.log(numarray);
+            var merror = Number(prompt("What would you like your margin of error to be?"));
+            var stdiv = getStandardDeviation(numarray);
+            document.getElementById("stdev").innerHTML = stdiv.toString();  
+            var rep = ((1.96 * stdiv) / merror) ^ 2; 
+            document.getElementById("reps").innerHTML = rep.toString();
+            document.getElementById('me').innerHTML = merror.toString();
+            var uncert = stdiv / (Math.sqrt(numarray.length));
+            document.getElementById('unc').innerHTML = uncert; 
+        }
+    </script>
+</body>
+</html>
