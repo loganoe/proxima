@@ -52,8 +52,10 @@
       }
       table, td {
   border: 1px solid black;
-        text-align: center; 
-
+        text-align: center;     
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14.5px;
+        background-color: white;
 }
     </style>
 </head>
@@ -70,11 +72,14 @@
         <p>Repetitions needed (95% confidence): <br> <br><span id="reps"></span></p>
         <p>Margin of error: <br> <br>  <span id="me"></span></p>
         <p>Uncertianty: <br> <br> <span id="unc"></span></p>
+        <p>Cum. Average: <br><br><span id="avg"></span> </p>
+        <p>Final Value: <br><br><span id="final"></span></p>
         </div>
     </div>
     <div class="right">
 
-        <h3 style = 'text-align: center;'>Data formatted in a table (copypasta into word):</h3>
+        <h3 style = 'text-align: center;'>Data formatted in a table (copypasta into word, auto-formatted correctly
+            ):</h3>
         <table id="finalTable"  > 
             <tr> 
                 <td>Repetition</td>
@@ -91,6 +96,13 @@
                  const variance = array.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / n;
                 return Math.sqrt(variance);
             }
+            function getAverage(array) {
+  let sum = 0;
+  for (let i = 0; i < array.length; i++) {
+    sum += array[i];
+  }
+  return sum / array.length;
+}
             // now we're back to my code :)
         function process() {
             var numarray = [];
@@ -106,16 +118,18 @@
                     alert("Only enter numbers pls. The final result may be flawed. ");
                 }
             }
-
+            
             console.log(numarray);
             var merror = Number(prompt("What would you like your margin of error to be?"));
             var stdiv = getStandardDeviation(numarray);
-            document.getElementById("stdev").innerHTML = stdiv.toString();  
+            document.getElementById("stdev").innerHTML = stdiv.toFixed(4);  
             var rep = ((1.96 * stdiv) / merror) ** 2; 
-            document.getElementById("reps").innerHTML = rep.toString();
+            document.getElementById("reps").innerHTML = rep.toFixed(4);
             document.getElementById('me').innerHTML = merror.toString();
             var uncert = stdiv / (Math.sqrt(numarray.length));
-            document.getElementById('unc').innerHTML = uncert; 
+            document.getElementById('unc').innerHTML = "+- " + uncert.toFixed(5); 
+            document.getElementById('avg').innerHTML = getAverage(numarray).toFixed(5); 
+            document.getElementById('final').innerHTML = getAverage(numarray).toFixed(4) + " +- "+ uncert.toFixed(4); 
 
             for (let i = 0; i < numarray.length; i++) {
                 var translatei = i + 1;
