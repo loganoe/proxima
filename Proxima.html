@@ -45,12 +45,15 @@
         .right {
             float: right;
             width: 33vw; 
+            text-align: center;
       }
       span {
         font-weight: bold; 
       }
       table, td {
   border: 1px solid black;
+        text-align: center; 
+
 }
     </style>
 </head>
@@ -72,7 +75,7 @@
     <div class="right">
 
         <h3 style = 'text-align: center;'>Data formatted in a table (copypasta into word):</h3>
-        <table id="finalTable"> 
+        <table id="finalTable"  > 
             <tr> 
                 <td>Repetition</td>
                 <td>Value (unit)</td>
@@ -108,7 +111,7 @@
             var merror = Number(prompt("What would you like your margin of error to be?"));
             var stdiv = getStandardDeviation(numarray);
             document.getElementById("stdev").innerHTML = stdiv.toString();  
-            var rep = ((1.96 * stdiv) / merror) ^ 2; 
+            var rep = ((1.96 * stdiv) / merror) ** 2; 
             document.getElementById("reps").innerHTML = rep.toString();
             document.getElementById('me').innerHTML = merror.toString();
             var uncert = stdiv / (Math.sqrt(numarray.length));
